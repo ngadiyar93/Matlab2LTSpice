@@ -57,3 +57,18 @@ fclose('all');
 
 % Run the simulation
 result = simulateModel(spicePath, fileName, filePath);
+
+% Plot all results and save as SVG
+plot_size = [0.25 2.5 2.5 2.5];
+for i = 1:result.num_variables
+plotName = sprintf('plot_%s',result.variable_name_list{i});
+figure(i)
+plot(result.time_vect, result.variable_mat(i,:));
+xlabel('Time [s]');
+ylab = sprintf('%s [V]',result.variable_name_list{i});
+ylabel(ylab)
+set(gca,'FontName','TimesNewRoman','FontSize',6, 'color', 'none');
+set(gcf,'PaperPositionMode','manual' ,'PaperUnits','inches' ,'PaperPosition',plot_size);    
+print('-dsvg','-noui',plotName); 
+end
+close all;
